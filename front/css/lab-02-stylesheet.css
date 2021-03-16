@@ -1,0 +1,11 @@
+.just_updated textarea{
+    background-color: lightgreen;
+}
+
+.just_updated input {
+    color: lightgreen;
+}
+
+.just_updated label {
+    color: lightgreen;
+}
