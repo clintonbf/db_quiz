@@ -1,12 +1,13 @@
 "use strict";
 
 const http  = require('http');
-const mysql = require('mysql');
-const fs    = require('fs');
+const url   = require('url');
 const cred  = require('./modules/credentials')
 
 const dbAdmin   = cred.getDBAdmin();
 const dbUser    = cred.getDBUser();
+
+const PATHNAME = '/questions';
 
 const GET = "GET";
 const POST = "POST";
@@ -14,7 +15,9 @@ const PUT = "PUT";
 const OPTIONS = "OPTIONS";
 
 const listener = http.createServer( (req, res) => {
-   if (req.method === GET) {
+    let q = url.parse(req.url);
+
+   if (req.method === GET && q.pathname === PATHNAME) {
         const query =   `SELECT q.id AS q_id, q.text AS question, c.id AS c_id, c.text AS answer, q.solution_id, c.is_correct
                         FROM question q, choices c
                         WHERE c.question_id = q.id
@@ -102,7 +105,7 @@ const listener = http.createServer( (req, res) => {
         });
     }
 
-   if (req.method === POST) {
+   if (req.method === POST && q.pathname === PATHNAME) {
        let sourceData = '';
 
        req.on('data', chunk => {
@@ -209,7 +212,7 @@ const listener = http.createServer( (req, res) => {
        // });
    }
 
-   if (req.method === PUT || req.method === OPTIONS) {
+   if ( (req.method === PUT || req.method === OPTIONS) && q.pathname === PATHNAME) {
         //Update every aspect of the question
        console.log("Admin has received PUT request");
 
