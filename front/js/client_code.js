@@ -1,4 +1,5 @@
 const URL = "https://clintonfernandes.ca/A01"
+const API_URL = URL + "/questions"
 
 /**
  * Initializes the admin page.
@@ -584,7 +585,7 @@ function addHandler() {
     console.log(`Sending ${newQuestion}`);
 
     const xhttp = new XMLHttpRequest();
-    xhttp.open("POST", URL, true);
+    xhttp.open("POST", API_URL, true);
     xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
     xhttp.send(JSON.stringify(newQuestion));
 
@@ -667,7 +668,7 @@ function clickChoiceHandler(questionId, idOfCorrectChoice) {
  */
 function submitPutRequest(newQuestion) {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", URL, true);
+    xhttp.open("PUT", API_URL, true);
     xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
     xhttp.send(JSON.stringify(newQuestion));
 
