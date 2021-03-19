@@ -109,7 +109,7 @@ const listener = http.createServer( (req, res) => {
            sourceData += chunk;
        })
 
-       req.on('data', chunk => {
+       req.on('end', chunk => {
            let data = JSON.parse(sourceData);
 
            const questionInsert =
@@ -165,7 +165,42 @@ const listener = http.createServer( (req, res) => {
                            dbAdmin.query(updateQuestion, (uErr, result) => {
                                if (uErr) throw uErr;
 
-                               res.end(updateQuestion);
+                               // Improvement: get the newly inserted object from DB and return a response
+
+                               const getInsertedQuestion =
+                                   `SELECT q.id AS q_id, q.text AS question, q.solution_id, c.id AS c_id, c.text AS answer, c.is_correct
+                               FROM question q, choices c
+                               WHERE q.id = (SELECT MAX(id) FROM question)
+                               AND c.question_id = q.id`;
+
+                               dbAdmin.query(getInsertedQuestion, (iErr, result) => {
+                                   //Put together an object a la GET
+
+                                   let questionObject = {};
+                                   let choices = [];
+
+                                   // First result
+                                   let record = result[0];
+                                   questionObject.questionId = record.q_id;
+                                   questionObject.question = record.question;
+                                   questionObject.solution_id = record.solution_id
+
+                                   for (let i = 0; i < result.length; i++) {
+                                       record = result[i];
+                                       choices.push({
+                                           id: record.c_id,
+                                           text: record.answer,
+                                           is_correct: record.is_correct
+                                       });
+                                   }
+
+                                   questionObject.choices = choices;
+
+                                   console.log(`Sending ${questionObject}`);
+                                   console.log(`=========\nSending ${JSON.stringify(questionObject)}`);
+
+                                   res.end(JSON.stringify(questionObject));
+                               });
                            });
                        });
                    })
