@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 16, 2021 at 03:18 PM
+-- Generation Time: Mar 19, 2021 at 01:00 PM
 -- Server version: 10.3.28-MariaDB-log
 -- PHP Version: 7.3.6
 
@@ -40,10 +40,15 @@ CREATE TABLE `choices` (
 --
 
 INSERT INTO `choices` (`id`, `TEXT`, `question_id`, `is_correct`) VALUES
+(156, 'C', 58, 1),
+(157, 'K', 58, 0),
+(208, 'red', 71, 0),
+(207, 'blue', 71, 0),
 (145, 'Rufus', 55, 0),
-(146, 'Clint', 55, 0),
-(147, 'Clinton', 55, 1),
-(148, 'Salaam', 55, 0);
+(146, 'Clint', 55, 1),
+(147, 'Clinton', 55, 0),
+(148, 'Salaam', 55, 0),
+(206, 'green', 71, 1);
 
 -- --------------------------------------------------------
 
@@ -62,7 +67,9 @@ CREATE TABLE `question` (
 --
 
 INSERT INTO `question` (`id`, `text`, `solution_id`) VALUES
-(55, 'What is my name?', 147);
+(55, 'What is my name?', 146),
+(71, 'What is the best colour?', 206),
+(58, 'What letter does Callie\'s name start with?', 152);
 
 --
 -- Indexes for dumped tables
@@ -79,7 +86,8 @@ ALTER TABLE `choices`
 -- Indexes for table `question`
 --
 ALTER TABLE `question`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `solution_id` (`solution_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -89,13 +97,13 @@ ALTER TABLE `question`
 -- AUTO_INCREMENT for table `choices`
 --
 ALTER TABLE `choices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=209;
 
 --
 -- AUTO_INCREMENT for table `question`
 --
 ALTER TABLE `question`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
