@@ -1,4 +1,4 @@
-const URL = "https://clintonfernandes.ca/COMP4537/Assignments/A01"
+const URL = "https://clintonfernandes.ca/A01"
 
 /**
  * Initializes the admin page.
@@ -594,7 +594,7 @@ function addHandler() {
 
             displayPostOK();
 
-            renderQuestion(newQuestion);
+            renderQuestion(JSON.parse(xhttp.response));
 
             document.body.appendChild(document.createElement("br"));
 
